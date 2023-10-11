@@ -1,7 +1,91 @@
-.attribution {
-  font-size: 11px;
-  text-align: center;
+@use "light-theme" as *;
+@use "dark-theme" as *;
+
+//primary
+$brightBlue: hsl(220, 98%, 61%);
+$checkBackground: linear-gradient hsl(192, 100%, 67%) to hsl(280, 87%, 65%);
+
+// general styles
+
+$font-size: 18px;
+$normal: 400;
+$bold: 700;
+$height: 2.9rem;
+
+.round {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--check-color);
+  border-radius: 50%;
+  margin-right: 0.3rem;
 }
-.attribution a {
-  color: hsl(228, 45%, 44%);
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--bg-color);
+  background-image: var(--bg-img-desktop);
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: 100% 20rem;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.todo-container {
+  padding-top: 5rem;
+  max-width: 31rem;
+  margin: 0 auto;
+
+  .todo-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    .todo-title {
+      letter-spacing: 0.8rem;
+      color: var(--card-bg);
+    }
+    .toggle-themes-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+  }
+  .todo-list-input-container {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.6rem 1rem;
+
+    background-color: var(--card-bg);
+    border-radius: 5px;
+    input {
+      flex: 1;
+      border: none;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      font-size: 1.1rem;
+      padding: 0 0.5rem;
+      outline: none;
+      &::placeholder {
+        font-size: 0.8rem;
+      }
+    }
+    .add-todo-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 2.5rem;
+    }
+  }
+}
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Josefin Sans", sans-serif;
 }

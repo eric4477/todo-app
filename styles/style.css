@@ -1,8 +1,103 @@
-.attribution {
-  font-size: 11px;
-  text-align: center;
+:root[data-theme=light] {
+  --bg-color: #f6f6f8;
+  --card-bg: white;
+  --text-color: hsl(0, 0%, 26%);
+  --inactive-color: hsl(236, 9%, 61%);
+  --active-color: hsl(220, 98%, 61%);
+  --hover-color: hsl(235, 19%, 35%);
+  --check-color: hsl(233, 11%, 84%);
+  --shadow-color: hsla(240, 5%, 85%, 0.603);
+  --plus-color: black;
+  --bg-img-mobile: url(../images/bg-mobile-light.jpg);
+  --bg-img-desktop: url(../images/bg-desktop-light.jpg);
 }
 
-.attribution a {
-  color: hsl(228, 45%, 44%);
+:root[data-theme=dark] {
+  --bg-color: #171723;
+  --card-bg: hsl(235, 24%, 19%);
+  --text-color: hsl(0, 0%, 73%);
+  --inactive-color: hsl(234, 11%, 52%);
+  --active-color: hsl(220, 98%, 61%);
+  --hover-color: hsl(236, 33%, 92%);
+  --check-color: hsl(233, 14%, 35%);
+  --shadow-color: hsla(0, 0%, 7%, 0.877);
+  --plus-color: white;
+  --bg-img-mobile: url(../images/bg-mobile-dark.jpg);
+  --bg-img-desktop: url(../images/bg-desktop-dark.jpg);
+}
+
+.round {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--check-color);
+  border-radius: 50%;
+  margin-right: 0.3rem;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--bg-color);
+  background-image: var(--bg-img-desktop);
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: 100% 20rem;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.todo-container {
+  padding-top: 5rem;
+  max-width: 31rem;
+  margin: 0 auto;
+}
+.todo-container .todo-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.todo-container .todo-header .todo-title {
+  letter-spacing: 0.8rem;
+  color: var(--card-bg);
+}
+.todo-container .todo-header .toggle-themes-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.todo-container .todo-list-input-container {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  background-color: var(--card-bg);
+  border-radius: 5px;
+}
+.todo-container .todo-list-input-container input {
+  flex: 1;
+  border: none;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  font-size: 1.1rem;
+  padding: 0 0.5rem;
+  outline: none;
+}
+.todo-container .todo-list-input-container input::placeholder {
+  font-size: 0.8rem;
+}
+.todo-container .todo-list-input-container .add-todo-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 2.5rem;
+}
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Josefin Sans", sans-serif;
 }/*# sourceMappingURL=style.css.map */
