@@ -16,16 +16,81 @@
   </head>
   <body>
     <div class="todo-container">
-      <div class="todo-header">
-        <h1 class="todo-title">TODO</h1>
-        <button class="toggle-themes-btn">
-          <img src="images/icon-moon.svg" alt="icon-toggle" />
-        </button>
-      </div>
+      <header>
+        <div class="todo-header">
+          <h1 class="todo-title">TODO</h1>
+          <button class="btn toggle-themes-btn">
+            <img src="images/icon-moon.svg" alt="icon-toggle" />
+          </button>
+        </div>
+      </header>
       <div class="todo-list-input-container">
-        <span class="round"></span>
+        <span class="circle"></span>
         <input type="text" placeholder="Create a new todo..." />
         <button class="add-todo-btn">+</button>
+      </div>
+      <div class="todo-containers">
+        <!-- <div class="empty-container">
+          <span>this is empty</span>
+        </div> -->
+        <div class="todo-list-wrapper">
+          <li class="todo-item">
+            <span class="round checked">
+              <img src="images/icon-check.svg" alt="" />
+            </span>
+            <p class="todo-text todo-completed">
+              Completed online Javascript course
+            </p>
+            <button class="btn remove-btn">
+              <img src="images/icon-cross.svg" alt="" />
+            </button>
+          </li>
+          <li class="todo-item">
+            <span class="round">
+              <img src="images/icon-check.svg" alt="" />
+            </span>
+            <p class="todo-text">Jog around the park 3x</p>
+            <button class="btn remove-btn">
+              <img src="images/icon-cross.svg" alt="" />
+            </button>
+          </li>
+          <li class="todo-item">
+            <span class="round">
+              <img src="images/icon-check.svg" alt="" />
+            </span>
+            <p class="todo-text">Jog around the park 3x</p>
+            <button class="btn remove-btn">
+              <img src="images/icon-cross.svg" alt="" />
+            </button>
+          </li>
+          <li class="todo-item">
+            <span class="round">
+              <img src="images/icon-check.svg" alt="" />
+            </span>
+            <p class="todo-text">Jog around the park 3x</p>
+            <button class="btn remove-btn">
+              <img src="images/icon-cross.svg" alt="" />
+            </button>
+          </li>
+          <li class="todo-item">
+            <span class="round">
+              <img src="images/icon-check.svg" alt="" />
+            </span>
+            <p class="todo-text">Jog around the park 3x</p>
+            <button class="btn remove-btn">
+              <img src="images/icon-cross.svg" alt="" />
+            </button>
+          </li>
+          <li class="todo-item">
+            <span class="round">
+              <img src="images/icon-check.svg" alt="" />
+            </span>
+            <p class="todo-text">Jog around the park 3x</p>
+            <button class="btn remove-btn">
+              <img src="images/icon-cross.svg" alt="" />
+            </button>
+          </li>
+        </div>
       </div>
     </div>
   </body>

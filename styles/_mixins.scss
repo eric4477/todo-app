@@ -1,0 +1,9 @@
+@mixin todo-list-wrapper {
+  margin-top: 1.5rem;
+  min-height: 12rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  overflow-x: hidden;
+  background-color: var(--card-bg);
+}
