@@ -15,6 +15,10 @@ $height: 3.7rem;
 $pop: 1.1;
 
 .hidden {
+  display: none !important;
+}
+.remove-list {
+  transform: translateX(100%);
   display: none;
 }
 
@@ -82,7 +86,7 @@ body {
 }
 
 .todo-container {
-  padding-top: 5rem;
+  padding-top: 4.5rem;
   max-width: 31rem;
   margin: 0 auto;
 
@@ -133,15 +137,18 @@ body {
       background: none;
       border: none;
       cursor: pointer;
+      user-select: none;
       font-size: 2.5rem;
     }
   }
 
   .todo-containers {
+    border-radius: 5px;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
     .empty-container {
     }
     .todo-list-wrapper {
-      @include todo-list-wrapper;
+      @include todo-list-wrapper();
 
       .todo-item {
         display: flex;
@@ -150,6 +157,7 @@ body {
         padding: 0.6rem 0;
         padding-left: 1rem;
         padding-right: 1.2rem;
+        transition: all 0.5s;
         // transform: translateX(100%);
         height: $height;
         cursor: pointer;
@@ -165,11 +173,13 @@ body {
         .remove-btn {
           opacity: 0;
           visibility: hidden;
+          user-select: none;
         }
         &:hover {
           .remove-btn {
             opacity: 1;
             visibility: visible;
+            user-select: none;
           }
         }
       }
