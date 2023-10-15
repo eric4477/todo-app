@@ -1,9 +1,10 @@
-@mixin todo-list-wrapper {
+@mixin todo-containers {
   margin-top: 1.5rem;
   min-height: 14rem;
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   overflow-x: hidden;
   background-color: var(--card-bg);
 }

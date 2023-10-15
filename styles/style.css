@@ -32,7 +32,10 @@
 
 .remove-list {
   transform: translateX(100%);
-  display: none;
+}
+
+.active {
+  color: var(--active-color) !important;
 }
 
 .round {
@@ -99,6 +102,7 @@ body {
 
 .todo-container {
   padding-top: 4.5rem;
+  padding-bottom: 4rem;
   max-width: 31rem;
   margin: 0 auto;
 }
@@ -130,11 +134,12 @@ body {
 .todo-container .todo-list-input-container .circle {
   width: 24px;
   height: 24px;
+  color: var(--plus-color);
   border-radius: 50%;
   margin-right: 0.3rem;
   border: 1px solid var(--check-color);
 }
-.todo-container .todo-list-input-container input {
+.todo-container .todo-list-input-container #input {
   flex: 1;
   border: none;
   color: var(--text-color);
@@ -143,10 +148,10 @@ body {
   padding: 0 0.5rem;
   outline: none;
 }
-.todo-container .todo-list-input-container input::placeholder {
+.todo-container .todo-list-input-container #input::placeholder {
   font-size: 0.8rem;
 }
-.todo-container .todo-list-input-container .add-todo-btn {
+.todo-container .todo-list-input-container #add-todo-btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -157,16 +162,7 @@ body {
   border-radius: 5px;
   box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 }
-.todo-container .todo-containers .todo-list-wrapper {
-  margin-top: 1.5rem;
-  min-height: 14rem;
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px;
-  overflow-x: hidden;
-  background-color: var(--card-bg);
-}
-.todo-container .todo-containers .todo-list-wrapper .todo-item {
+.todo-container .todo-containers .todo-item {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -178,20 +174,66 @@ body {
   cursor: pointer;
   border-bottom: 1px solid var(--shadow-color);
 }
-.todo-container .todo-containers .todo-list-wrapper .todo-item .todo-text {
+.todo-container .todo-containers .todo-item .todo-text {
   flex-grow: 1;
   font-size: 1rem;
   user-select: none;
   color: var(--text-color);
   transition: all 0.3s ease-in-out;
 }
-.todo-container .todo-containers .todo-list-wrapper .todo-item .remove-btn {
+.todo-container .todo-containers .todo-item .remove-btn {
   opacity: 0;
   visibility: hidden;
   user-select: none;
 }
-.todo-container .todo-containers .todo-list-wrapper .todo-item:hover .remove-btn {
+.todo-container .todo-containers .todo-item:hover .remove-btn {
   opacity: 1;
   visibility: visible;
   user-select: none;
+}
+.todo-container .todo-containers .all-list-container {
+  margin-top: 1.5rem;
+  min-height: 14rem;
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  overflow-x: hidden;
+  background-color: var(--card-bg);
+}
+.todo-container .todo-containers .todo-tabs-container {
+  height: 3rem;
+  background-color: var(--card-bg);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.2rem;
+}
+.todo-container .todo-containers .todo-tabs-container h4 {
+  font-size: 0.9rem;
+  color: var(--inactive-color);
+  font-weight: 400;
+}
+.todo-container .todo-containers .todo-tabs-container .tab-btns {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.todo-container .todo-containers .todo-tabs-container .tab-btns .btn {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--inactive-color);
+}
+.todo-container .todo-containers .todo-tabs-container .tab-btns .btn:hover {
+  color: var(--hover-color);
+}
+.todo-container .todo-containers .todo-tabs-container .clear-btn {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--inactive-color);
+}
+.todo-container .todo-containers .todo-tabs-container .clear-btn:hover {
+  color: var(--hover-color);
 }/*# sourceMappingURL=style.css.map */

@@ -19,7 +19,10 @@ $pop: 1.1;
 }
 .remove-list {
   transform: translateX(100%);
-  display: none;
+}
+
+.active {
+  color: var(--active-color) !important;
 }
 
 .round {
@@ -87,6 +90,7 @@ body {
 
 .todo-container {
   padding-top: 4.5rem;
+  padding-bottom: 4rem;
   max-width: 31rem;
   margin: 0 auto;
 
@@ -117,11 +121,12 @@ body {
     .circle {
       width: 24px;
       height: 24px;
+      color: var(--plus-color);
       border-radius: 50%;
       margin-right: 0.3rem;
       border: 1px solid var(--check-color);
     }
-    input {
+    #input {
       flex: 1;
       border: none;
       color: var(--text-color);
@@ -133,7 +138,7 @@ body {
         font-size: 0.8rem;
       }
     }
-    .add-todo-btn {
+    #add-todo-btn {
       background: none;
       border: none;
       cursor: pointer;
@@ -145,42 +150,77 @@ body {
   .todo-containers {
     border-radius: 5px;
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
-    .empty-container {
-    }
-    .todo-list-wrapper {
-      @include todo-list-wrapper();
+    .todo-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0.6rem 0;
+      padding-left: 1rem;
+      padding-right: 1.2rem;
+      transition: all 0.5s;
+      height: $height;
+      cursor: pointer;
+      border-bottom: 1px solid var(--shadow-color);
+      .todo-text {
+        flex-grow: 1;
+        font-size: $font-size;
+        user-select: none;
+        color: var(--text-color);
+        transition: all 0.3s ease-in-out;
+      }
 
-      .todo-item {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 0.6rem 0;
-        padding-left: 1rem;
-        padding-right: 1.2rem;
-        transition: all 0.5s;
-        // transform: translateX(100%);
-        height: $height;
-        cursor: pointer;
-        border-bottom: 1px solid var(--shadow-color);
-        .todo-text {
-          flex-grow: 1;
-          font-size: $font-size;
-          user-select: none;
-          color: var(--text-color);
-          transition: all 0.3s ease-in-out;
-        }
-
+      .remove-btn {
+        opacity: 0;
+        visibility: hidden;
+        user-select: none;
+      }
+      &:hover {
         .remove-btn {
-          opacity: 0;
-          visibility: hidden;
+          opacity: 1;
+          visibility: visible;
           user-select: none;
         }
-        &:hover {
-          .remove-btn {
-            opacity: 1;
-            visibility: visible;
-            user-select: none;
+      }
+    }
+    // .empty-container {
+    // }
+    .all-list-container {
+      @include todo-containers();
+    }
+    .todo-tabs-container {
+      height: 3rem;
+      background-color: var(--card-bg);
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 1.2rem;
+      h4 {
+        font-size: 0.9rem;
+        color: var(--inactive-color);
+        font-weight: 400;
+      }
+      .tab-btns {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        .btn {
+          font-weight: 700;
+          font-size: 0.9rem;
+          color: var(--inactive-color);
+          &:hover {
+            color: var(--hover-color);
           }
+        }
+      }
+      .clear-btn {
+        font-weight: 400;
+        font-size: 0.9rem;
+        color: var(--inactive-color);
+        &:hover {
+          color: var(--hover-color);
         }
       }
     }
