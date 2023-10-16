@@ -17,6 +17,10 @@ $pop: 1.1;
 .hidden {
   display: none !important;
 }
+
+.show {
+  display: block !important;
+}
 .remove-list {
   transform: translateX(100%);
 }
@@ -185,6 +189,21 @@ body {
     // .empty-container {
     // }
     .all-list-container {
+      @include todo-containers();
+    }
+    .empty-container {
+      @include todo-containers();
+      align-items: center;
+      justify-content: center;
+      span {
+        font-size: 1.2rem;
+      }
+    }
+    .active-list-container {
+      @include todo-containers();
+    }
+
+    .completed-list-container {
       @include todo-containers();
     }
     .todo-tabs-container {

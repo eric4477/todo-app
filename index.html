@@ -31,11 +31,13 @@
       </div>
       <!--todo containers-->
       <div class="todo-containers">
-        <!-- <div class="empty-container">
-          <span>this is empty</span>
-        </div> -->
+        <!--empty container-->
+        <div class="empty-list-container hidden">
+          <span>No Items in list!</span>
+        </div>
+        <!--end of empty container-->
         <!--all list container-->
-        <div class="all-list-container">
+        <div class="all-list-container list-container">
           <li class="todo-item">
             <span class="round checked">
               <img src="images/icon-check.svg" alt="check-icon" />
@@ -77,18 +79,18 @@
         </div>
         <!--end of all list container-->
         <!--active list container-->
-        <div class="active-list-container hidden"></div>
+        <div class="active-list-container list-container hidden"></div>
         <!--end of active list container-->
         <!--completed list container-->
-        <div class="completed-list-container hidden"></div>
+        <div class="completed-list-container list-container hidden"></div>
         <!--end of completed list container-->
         <!--tabs container-->
         <div class="todo-tabs-container">
           <h4><span>3</span> items left</h4>
           <div class="tab-btns">
-            <button class="btn all-btn active">All</button>
-            <button class="btn active-btn">Active</button>
-            <button class="btn completed-btn">Completed</button>
+            <button class="btn tab-btn active">All</button>
+            <button class="btn tab-btn">Active</button>
+            <button class="btn tab-btn">Completed</button>
           </div>
           <button class="btn clear-btn">Clear Completed</button>
         </div>

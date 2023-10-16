@@ -193,7 +193,42 @@ body {
 }
 .todo-container .todo-containers .all-list-container {
   margin-top: 1.5rem;
-  min-height: 14rem;
+  min-height: 12rem;
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  overflow-x: hidden;
+  background-color: var(--card-bg);
+}
+.todo-container .todo-containers .empty-container {
+  margin-top: 1.5rem;
+  min-height: 12rem;
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  overflow-x: hidden;
+  background-color: var(--card-bg);
+  align-items: center;
+  justify-content: center;
+}
+.todo-container .todo-containers .empty-container span {
+  font-size: 1.2rem;
+}
+.todo-container .todo-containers .active-list-container {
+  margin-top: 1.5rem;
+  min-height: 12rem;
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  overflow-x: hidden;
+  background-color: var(--card-bg);
+}
+.todo-container .todo-containers .completed-list-container {
+  margin-top: 1.5rem;
+  min-height: 12rem;
   display: flex;
   flex-direction: column;
   border-top-left-radius: 5px;

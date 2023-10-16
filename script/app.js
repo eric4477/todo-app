@@ -1,14 +1,24 @@
+// getting document elements
 const inputEl = document.getElementById("input");
 const addBtn = document.getElementById("add-todo-btn");
-const allListContainer = document.querySelector(".all-list-container");
-let todosItemsEl = document.querySelectorAll(".todo-item");
+const emptyLiContainer = document.querySelector(".empty-list-container");
+let allLiContainers = document.querySelectorAll(".list-container");
+let tabBtns = document.querySelectorAll(".tab-btn");
 let todosTextsEl = document.querySelectorAll(".todo-text");
 let roundsEl = document.querySelectorAll(".round");
 let removeBtn = document.querySelectorAll(".remove-btn");
+
+// variables
+
+// the item id
 let id = 1;
+// the all list container
+const allLiContainer = allLiContainers[0];
 
 // array for getting new items's objects
 let itemsObjArr = [];
+
+//functions
 
 // function for removing item
 function removeItem(e) {
@@ -17,6 +27,17 @@ function removeItem(e) {
   setTimeout(function () {
     todoItem.remove();
   }, 500);
+}
+
+// function for removing active btns
+// and list containers
+function removeActive() {
+  tabBtns.forEach((btn) => {
+    btn.classList.remove("active");
+  });
+  allLiContainers.forEach((container) => {
+    container.classList.add("hidden");
+  });
 }
 
 // function for adding all the events
@@ -50,7 +71,7 @@ function createItem(todo) {
   <button class="btn remove-btn">
   <img src="images/icon-cross.svg" alt="cross-icon" />
   </button>`;
-  allListContainer.appendChild(li);
+  allLiContainer.appendChild(li);
   newItemAddEvents(li);
 }
 
@@ -66,11 +87,32 @@ class ListItem {
   }
 }
 
-// ckecking if the user clicked on the enter key
+// event lisnteners
+
+// ckecking if the user clicked on the enter keyn
 inputEl.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
+  if (e.key === "Enter" && inputEl.value !== "") {
     // creating a new item object every time users clicks
     const item = new ListItem(inputEl.value, this.completed, id);
+    // getting the todo text from the item object
+    const todo = Object.values(item)[0];
+    // calling the create item function
+    createItem(todo);
+    // pushing the item object to the array
+    itemsObjArr.push(item);
+    // resetting the input
+    inputEl.value = "";
+    // incrementing the id
+    id++;
+    console.log(itemsObjArr);
+  }
+});
+
+// checking if the user clicked on the add button
+addBtn.addEventListener("click", () => {
+  if (inputEl.value !== "") {
+    // creating a new item object every time users clicks
+    const item = new ListItem(input.value, this.completed, id);
     // getting the todo text from the item object
     const todo = Object.values(item)[0];
     // calling the create item function
@@ -84,20 +126,15 @@ inputEl.addEventListener("keydown", (e) => {
   }
 });
 
-// checking if the user clicked on the add button
-addBtn.addEventListener("click", () => {
-  // creating a new item object every time users clicks
-  const item = new ListItem(input.value, this.completed, id);
-  // getting the todo text from the item object
-  const todo = Object.values(item)[0];
-  // calling the create item function
-  createItem(todo);
-  // pushing the item object to the array
-  itemsObjArr.push(item);
-  // resetting the input
-  inputEl.value = "";
-  // incrementing the id
-  id++;
+// adding the active class to the selected btn
+// and toggle list containers
+tabBtns.forEach((btn, i) => {
+  btn.addEventListener("click", () => {
+    removeActive();
+    btn.classList.add("active");
+    console.log(allLiContainers[i]);
+    allLiContainers[i].classList.remove("hidden");
+  });
 });
 
 // checking if user completed default todos by
