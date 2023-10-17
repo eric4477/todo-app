@@ -114,7 +114,7 @@ body {
 }
 .todo-container .todo-header .todo-title {
   letter-spacing: 0.8rem;
-  color: var(--card-bg);
+  color: white;
 }
 .todo-container .todo-header .toggle-themes-btn {
   background: none;
@@ -142,6 +142,7 @@ body {
 .todo-container .todo-list-input-container #input {
   flex: 1;
   border: none;
+  background: none;
   color: var(--text-color);
   font-size: 1rem;
   color: var(--plus-color);
@@ -153,6 +154,7 @@ body {
 }
 .todo-container .todo-list-input-container #add-todo-btn {
   background: none;
+  color: var(--plus-color);
   border: none;
   cursor: pointer;
   user-select: none;

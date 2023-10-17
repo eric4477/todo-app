@@ -1,5 +1,7 @@
 // getting document elements
+const html = document.documentElement;
 const inputEl = document.getElementById("input");
+const themesBtn = document.querySelector(".toggle-themes-btn");
 const addBtn = document.getElementById("add-todo-btn");
 const emptyLiContainer = document.querySelector(".empty-list-container");
 let allLiContainers = document.querySelectorAll(".list-container");
@@ -11,15 +13,29 @@ let removeBtn = document.querySelectorAll(".remove-btn");
 // variables
 
 // the item id
-let id = 1;
+let id = 5;
 // the all list container
 const allLiContainer = allLiContainers[0];
 
 // array for getting new items's objects
 let itemsObjArr = [];
+let defaultItemsObjArr = [{}];
 
 //functions
 
+// function for toggle themes
+function toggleThemes(e) {
+  const { theme } = html.dataset;
+  if (theme === "light") {
+    e.target.src = "images/icon-sun.svg";
+    e.target.alt = "Sun image";
+    html.dataset.theme = "dark";
+  } else {
+    e.target.src = "images/icon-moon.svg";
+    e.target.alt = "Moon image";
+    html.dataset.theme = "light";
+  }
+}
 // function for removing item
 function removeItem(e) {
   const todoItem = e.currentTarget.parentElement;
@@ -88,6 +104,9 @@ class ListItem {
 }
 
 // event lisnteners
+
+// checking if the user clicked on the theme btn
+themesBtn.addEventListener("click", toggleThemes);
 
 // ckecking if the user clicked on the enter keyn
 inputEl.addEventListener("keydown", (e) => {

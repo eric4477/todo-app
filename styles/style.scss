@@ -5,6 +5,7 @@
 //primary colors
 $brightBlue: hsl(220, 98%, 61%);
 $CheckBackground: linear-gradient(hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+$white: #ffff;
 // end of primary colors
 
 // general styles
@@ -18,9 +19,6 @@ $pop: 1.1;
   display: none !important;
 }
 
-.show {
-  display: block !important;
-}
 .remove-list {
   transform: translateX(100%);
 }
@@ -105,7 +103,7 @@ body {
     justify-content: space-between;
     .todo-title {
       letter-spacing: 0.8rem;
-      color: var(--card-bg);
+      color: $white;
     }
     .toggle-themes-btn {
       background: none;
@@ -133,6 +131,7 @@ body {
     #input {
       flex: 1;
       border: none;
+      background: none;
       color: var(--text-color);
       font-size: $font-size;
       color: var(--plus-color);
@@ -144,6 +143,7 @@ body {
     }
     #add-todo-btn {
       background: none;
+      color: var(--plus-color);
       border: none;
       cursor: pointer;
       user-select: none;
