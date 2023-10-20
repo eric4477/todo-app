@@ -186,12 +186,10 @@ body {
         }
       }
     }
-    // .empty-container {
-    // }
     .all-list-container {
       @include todo-containers();
     }
-    .empty-container {
+    .empty-list-container {
       @include todo-containers();
       align-items: center;
       justify-content: center;

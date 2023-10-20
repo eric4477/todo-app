@@ -203,7 +203,7 @@ body {
   overflow-x: hidden;
   background-color: var(--card-bg);
 }
-.todo-container .todo-containers .empty-container {
+.todo-container .todo-containers .empty-list-container {
   margin-top: 1.5rem;
   min-height: 12rem;
   display: flex;
@@ -215,7 +215,7 @@ body {
   align-items: center;
   justify-content: center;
 }
-.todo-container .todo-containers .empty-container span {
+.todo-container .todo-containers .empty-list-container span {
   font-size: 1.2rem;
 }
 .todo-container .todo-containers .active-list-container {

@@ -3,27 +3,20 @@ const html = document.documentElement;
 const inputEl = document.getElementById("input");
 const themesBtn = document.querySelector(".toggle-themes-btn");
 const addBtn = document.getElementById("add-todo-btn");
+const allLiContainer = document.querySelector(".all-list-container");
 const emptyLiContainer = document.querySelector(".empty-list-container");
 let allLiContainers = document.querySelectorAll(".list-container");
 let tabBtns = document.querySelectorAll(".tab-btn");
-let todosTextsEl = document.querySelectorAll(".todo-text");
 let roundsEl = document.querySelectorAll(".round");
 let removeBtn = document.querySelectorAll(".remove-btn");
 
 // variables
-
-// the item id
+const todosArr = getLocalStorage();
 let id = 5;
-// the all list container
-const allLiContainer = allLiContainers[0];
-
-// array for getting new items's objects
-let itemsObjArr = [];
-let defaultItemsObjArr = [{}];
 
 //functions
 
-// function for toggle themes
+// function for toggling themes
 function toggleThemes(e) {
   const { theme } = html.dataset;
   if (theme === "light") {
@@ -36,17 +29,135 @@ function toggleThemes(e) {
     html.dataset.theme = "light";
   }
 }
-// function for removing item
+
+// functon for creating the todo
+function createTodo(todoObj) {
+  const { id, todo, completed } = todoObj;
+  const li = document.createElement("li");
+  li.setAttribute("id", id);
+  li.setAttribute("class", "todo-item");
+  li.innerHTML = `<span class="round ${completed ? "checked" : ""}">
+  <img src="images/icon-check.svg" alt="check-icon" />
+  </span>
+  <p class="todo-text ${completed ? "todo-completed" : ""}">
+     ${todo}
+  </p>
+  <button class="btn remove-btn">
+  <img src="images/icon-cross.svg" alt="cross-icon" />
+  </button>`;
+  todoAddEvents(li);
+  allLiContainer.appendChild(li);
+}
+
+//adding events to the todo
+function todoAddEvents(item) {
+  const roundEl = item.querySelector(".round");
+  const textEl = item.querySelector(".todo-text");
+  const removeBtn = item.querySelector(".remove-btn");
+  roundEl.addEventListener("click", () => {
+    textEl.classList.toggle("todo-completed");
+    roundEl.classList.toggle("checked");
+    checkCompleted(item, todosArr);
+  });
+  textEl.addEventListener("click", () => {
+    textEl.classList.toggle("todo-completed");
+    roundEl.classList.toggle("checked");
+    checkCompleted(item, todosArr);
+  });
+  removeBtn.addEventListener("click", removeItem);
+}
+
+//setting local storage
+function setLocalStorage(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+//getting local storage
+function getLocalStorage() {
+  // saving new todos items
+  const todos = localStorage.getItem("todos");
+  if (todos) {
+    return JSON.parse(todos);
+  } else {
+    // default todos items if there is no new items
+    const defaultTodos = [
+      {
+        todo: "Completed online Javascript course",
+        completed: true,
+        id: 1,
+      },
+      {
+        todo: "Jog around the park 3x",
+        completed: false,
+        id: 2,
+      },
+      {
+        todo: "10 minutes meditation",
+        completed: false,
+        id: 3,
+      },
+      {
+        todo: "Read for 1 hour",
+        completed: false,
+        id: 4,
+      },
+    ];
+    // setting local storage for the default items
+    setLocalStorage("todos", defaultTodos);
+    return defaultTodos;
+  }
+}
+
+// checking if the item is completed
+// and change the todos objects array
+function checkCompleted(item, todos) {
+  todos.forEach((todo) => {
+    if (todo.id === parseInt(item.getAttribute("id"))) {
+      todo.completed = !todo.completed;
+      setLocalStorage("todos", todosArr);
+    }
+  });
+}
+
+// function for checking if the item is removed
+// and change the todos objects array
+function checkRemoved(item, todos) {
+  todos.forEach((todo, i) => {
+    if (todo.id === parseInt(item.getAttribute("id"))) {
+      todos.splice(i, 1);
+      setLocalStorage("todos", todosArr);
+    }
+  });
+}
+
+// function for adding items to the  todos array
+function addItem(todo) {
+  if (todo !== "") {
+    const todoObj = {
+      todo: todo,
+      completed: false,
+      id: id++,
+    };
+    todosArr.push(todoObj);
+    // setting local storage for items
+    setLocalStorage("todos", todosArr);
+    // creating the todo object
+    createTodo(todoObj);
+    inputEl.value = "";
+  }
+}
+
+// function for removing items
 function removeItem(e) {
   const todoItem = e.currentTarget.parentElement;
   todoItem.classList.add("remove-list");
+  checkRemoved(todoItem, todosArr);
   setTimeout(function () {
     todoItem.remove();
   }, 500);
 }
 
-// function for removing active btns
-// and list containers
+// removing active btns and list containers
 function removeActive() {
   tabBtns.forEach((btn) => {
     btn.classList.remove("active");
@@ -56,129 +167,30 @@ function removeActive() {
   });
 }
 
-// function for adding all the events
-//for the new item
-function newItemAddEvents(item) {
-  const roundEl = item.firstChild;
-  const textEl = item.children[1];
-  const removeBtn = item.children[2];
-  roundEl.addEventListener("click", () => {
-    roundEl.classList.toggle("checked");
-    textEl.classList.toggle("todo-completed");
-  });
-  textEl.addEventListener("click", () => {
-    textEl.classList.toggle("todo-completed");
-    roundEl.classList.toggle("checked");
-  });
-  removeBtn.addEventListener("click", removeItem);
-}
-
-// function for creating the item
-function createItem(todo) {
-  const li = document.createElement("li");
-  li.setAttribute("id", id);
-  li.setAttribute("class", "todo-item");
-  li.innerHTML = `<span class="round">
-  <img src="images/icon-check.svg" alt="check-icon" />
-  </span>
-  <p class="todo-text">
-     ${todo}
-  </p>
-  <button class="btn remove-btn">
-  <img src="images/icon-cross.svg" alt="cross-icon" />
-  </button>`;
-  allLiContainer.appendChild(li);
-  newItemAddEvents(li);
-}
-
-// creating the list item class
-class ListItem {
-  constructor(todo, completed = false, id) {
-    this.todo = todo;
-    this.completed = completed;
-    this.id = id;
-  }
-  toggleCompleted() {
-    this.completed = !this.completed;
-  }
-}
-
-// event lisnteners
-
-// checking if the user clicked on the theme btn
-themesBtn.addEventListener("click", toggleThemes);
-
-// ckecking if the user clicked on the enter keyn
-inputEl.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && inputEl.value !== "") {
-    // creating a new item object every time users clicks
-    const item = new ListItem(inputEl.value, this.completed, id);
-    // getting the todo text from the item object
-    const todo = Object.values(item)[0];
-    // calling the create item function
-    createItem(todo);
-    // pushing the item object to the array
-    itemsObjArr.push(item);
-    // resetting the input
-    inputEl.value = "";
-    // incrementing the id
-    id++;
-    console.log(itemsObjArr);
-  }
+// adding default todos
+todosArr.forEach((item) => {
+  createTodo(item);
 });
 
-// checking if the user clicked on the add button
-addBtn.addEventListener("click", () => {
-  if (inputEl.value !== "") {
-    // creating a new item object every time users clicks
-    const item = new ListItem(input.value, this.completed, id);
-    // getting the todo text from the item object
-    const todo = Object.values(item)[0];
-    // calling the create item function
-    createItem(todo);
-    // pushing the item object to the array
-    itemsObjArr.push(item);
-    // resetting the input
-    inputEl.value = "";
-    // incrementing the id
-    id++;
-  }
-});
-
-// adding the active class to the selected btn
-// and toggle list containers
+// toggling tab btns and list containers
 tabBtns.forEach((btn, i) => {
   btn.addEventListener("click", () => {
     removeActive();
     btn.classList.add("active");
-    console.log(allLiContainers[i]);
     allLiContainers[i].classList.remove("hidden");
   });
 });
 
-// checking if user completed default todos by
-//clicking  on the checker
-roundsEl.forEach((round) => {
-  round.addEventListener("click", (e) => {
-    const parentEl = e.currentTarget.parentElement;
-    const textEl = parentEl.children[1];
-    round.classList.toggle("checked");
-    textEl.classList.toggle("todo-completed");
-  });
+// event listeners
+
+themesBtn.addEventListener("click", toggleThemes);
+
+inputEl.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    addItem(inputEl.value);
+  }
 });
 
-// checking if user completed default todos by
-//clicking  on the item
-todosTextsEl.forEach((text) => {
-  text.addEventListener("click", (e) => {
-    const todoItem = e.currentTarget.parentElement;
-    const roundEl = todoItem.children[0];
-    text.classList.toggle("todo-completed");
-    roundEl.classList.toggle("checked");
-  });
-});
-
-// ckecking if the user removed default items
-removeBtn.forEach((btn) => {
-  btn.addEventListener("click", removeItem);
+addBtn.addEventListener("click", () => {
+  addItem(inputEl.value);
 });
