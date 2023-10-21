@@ -5,14 +5,13 @@ const themesBtn = document.querySelector(".toggle-themes-btn");
 const addBtn = document.getElementById("add-todo-btn");
 const allLiContainer = document.querySelector(".all-list-container");
 const emptyLiContainer = document.querySelector(".empty-list-container");
+const itemsLeftEl = document.getElementById("items-left");
 let allLiContainers = document.querySelectorAll(".list-container");
 let tabBtns = document.querySelectorAll(".tab-btn");
-let roundsEl = document.querySelectorAll(".round");
 let removeBtn = document.querySelectorAll(".remove-btn");
 
 // variables
 const todosArr = getLocalStorage();
-let id = 5;
 
 //functions
 
@@ -58,11 +57,13 @@ function todoAddEvents(item) {
     textEl.classList.toggle("todo-completed");
     roundEl.classList.toggle("checked");
     checkCompleted(item, todosArr);
+    trackItems();
   });
   textEl.addEventListener("click", () => {
     textEl.classList.toggle("todo-completed");
     roundEl.classList.toggle("checked");
     checkCompleted(item, todosArr);
+    trackItems();
   });
   removeBtn.addEventListener("click", removeItem);
 }
@@ -104,6 +105,7 @@ function getLocalStorage() {
     ];
     // setting local storage for the default items
     setLocalStorage("todos", defaultTodos);
+    // returning the default todos array
     return defaultTodos;
   }
 }
@@ -133,17 +135,34 @@ function checkRemoved(item, todos) {
 // function for adding items to the  todos array
 function addItem(todo) {
   if (todo !== "") {
+    // Get the id from local storage
+    let id = localStorage.getItem("id");
+
+    // If there was no saved id, initialize it to 5
+    if (id === null) {
+      id = 5;
+    } else {
+      // Convert the id to a number
+      id = parseInt(id);
+    }
+
     const todoObj = {
       todo: todo,
       completed: false,
-      id: id++,
+      id: id,
     };
     todosArr.push(todoObj);
     // setting local storage for items
     setLocalStorage("todos", todosArr);
     // creating the todo object
     createTodo(todoObj);
+
+    trackItems();
     inputEl.value = "";
+
+    // Increment the id and save it to local storage
+    id++;
+    setLocalStorage("id", id);
   }
 }
 
@@ -152,6 +171,7 @@ function removeItem(e) {
   const todoItem = e.currentTarget.parentElement;
   todoItem.classList.add("remove-list");
   checkRemoved(todoItem, todosArr);
+  trackItems();
   setTimeout(function () {
     todoItem.remove();
   }, 500);
@@ -165,6 +185,13 @@ function removeActive() {
   allLiContainers.forEach((container) => {
     container.classList.add("hidden");
   });
+}
+
+function trackItems() {
+  let leftItems = todosArr.filter((item) => item.completed === false);
+  itemsLeftEl.textContent = leftItems.length;
+  // Save the count to local storage
+  setLocalStorage("leftItemsCount", leftItems.length);
 }
 
 // adding default todos
@@ -184,6 +211,15 @@ tabBtns.forEach((btn, i) => {
 // event listeners
 
 themesBtn.addEventListener("click", toggleThemes);
+
+// setting
+window.onload = function () {
+  // Get the count from local storage
+  let savedCount = localStorage.getItem("leftItemsCount");
+  if (savedCount !== null) {
+    itemsLeftEl.textContent = savedCount;
+  }
+};
 
 inputEl.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
