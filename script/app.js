@@ -15,6 +15,8 @@ let removeBtn = document.querySelectorAll(".remove-btn");
 
 // variables
 const todosArr = getLocalStorage();
+let completedItems = completedLiContainer.childNodes;
+let allItems = allLiContainer.childNodes;
 
 //functions
 
@@ -53,25 +55,52 @@ function createTodo(todoObj, container) {
 }
 
 //adding events to the todo
-function todoAddEvents(item, addAllEvents = true) {
+function todoAddEvents(item) {
   const removeBtn = item.querySelector(".remove-btn");
-  removeBtn.addEventListener("click", removeItem);
-  if (addAllEvents) {
-    const roundEl = item.querySelector(".round");
-    const textEl = item.querySelector(".todo-text");
-    roundEl.addEventListener("click", () => {
-      textEl.classList.toggle("todo-completed");
-      roundEl.classList.toggle("checked");
-      checkCompleted(item, todosArr);
-      trackItems(todosArr);
+  removeBtn.addEventListener("click", (e) => {
+    removeItem(e);
+    removeCompleted(item);
+  });
+  const roundEl = item.querySelector(".round");
+  const textEl = item.querySelector(".todo-text");
+  roundEl.addEventListener("click", () => {
+    textEl.classList.toggle("todo-completed");
+    roundEl.classList.toggle("checked");
+    checkCompleted(item, todosArr);
+    otherTodosEvents(completedItems, completedLiContainer);
+    trackItems(todosArr);
+  });
+  textEl.addEventListener("click", () => {
+    textEl.classList.toggle("todo-completed");
+    roundEl.classList.toggle("checked");
+    checkCompleted(item, todosArr);
+    otherTodosEvents(completedItems, completedLiContainer);
+    trackItems(todosArr);
+  });
+}
+// function for changing the completed and
+// active items events functionality
+function otherTodosEvents(items, container) {
+  items = container.childNodes;
+  items.forEach((item) => {
+    // Clone the item
+    let clone = item.cloneNode(true);
+    // Add event listener only to the remove button of the cloned item
+    const removeBtn = clone.querySelector(".remove-btn");
+    removeBtn.addEventListener("click", function (e) {
+      // checking if the item is in the all list container
+      allItems.forEach((item) => {
+        const todoItem = e.currentTarget.parentElement;
+        // if found remove the item from the all list container
+        if (item.id === todoItem.id) {
+          allLiContainer.removeChild(item);
+        }
+      });
+      removeItem(e);
     });
-    textEl.addEventListener("click", () => {
-      textEl.classList.toggle("todo-completed");
-      roundEl.classList.toggle("checked");
-      checkCompleted(item, todosArr);
-      trackItems(todosArr);
-    });
-  }
+    // Replace the original item with the cloned item
+    item.parentNode.replaceChild(clone, item);
+  });
 }
 
 //setting local storage
@@ -149,8 +178,7 @@ function addItem(todo) {
     setLocalStorage("id", id);
   }
 }
-// checking if the item is completed
-// and change the todos objects array
+// checking if the item is completed and change the todos objects array
 function checkCompleted(item, todos) {
   todos.forEach((todo) => {
     if (todo.id === parseInt(item.getAttribute("id"))) {
@@ -199,20 +227,6 @@ function removeActive() {
     container.classList.add("hidden");
   });
 }
-// adding the events for the comppleted items
-// function completedItemsEvents() {
-//   let completedItems = completedLiContainer.childNodes;
-//   completedItems.forEach((item) => {
-//     // Clone the item
-//     let clone = item.cloneNode(true);
-//     // Add event listener only to the remove button of the cloned item
-//     const removeBtn = clone.querySelector(".remove-btn");
-//     removeBtn.addEventListener("click", removeItem);
-
-//     // Replace the original item with the cloned item
-//     item.parentNode.replaceChild(clone, item);
-//   });
-// }
 
 // removing completed items from the completed list
 // container
@@ -259,6 +273,8 @@ window.onload = function () {
       createTodo(todo, completedLiContainer);
     }
   });
+
+  otherTodosEvents(completedItems, completedLiContainer);
 
   // Get the count from local storage
   let savedCount = localStorage.getItem("leftItemsCount");
