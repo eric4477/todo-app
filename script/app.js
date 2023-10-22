@@ -4,6 +4,9 @@ const inputEl = document.getElementById("input");
 const themesBtn = document.querySelector(".toggle-themes-btn");
 const addBtn = document.getElementById("add-todo-btn");
 const allLiContainer = document.querySelector(".all-list-container");
+const completedLiContainer = document.querySelector(
+  ".completed-list-container"
+);
 const emptyLiContainer = document.querySelector(".empty-list-container");
 const itemsLeftEl = document.getElementById("items-left");
 let allLiContainers = document.querySelectorAll(".list-container");
@@ -30,7 +33,7 @@ function toggleThemes(e) {
 }
 
 // functon for creating the todo
-function createTodo(todoObj) {
+function createTodo(todoObj, container) {
   const { id, todo, completed } = todoObj;
   const li = document.createElement("li");
   li.setAttribute("id", id);
@@ -44,28 +47,31 @@ function createTodo(todoObj) {
   <button class="btn remove-btn">
   <img src="images/icon-cross.svg" alt="cross-icon" />
   </button>`;
+
   todoAddEvents(li);
-  allLiContainer.appendChild(li);
+  container.appendChild(li);
 }
 
 //adding events to the todo
-function todoAddEvents(item) {
-  const roundEl = item.querySelector(".round");
-  const textEl = item.querySelector(".todo-text");
+function todoAddEvents(item, addAllEvents = true) {
   const removeBtn = item.querySelector(".remove-btn");
-  roundEl.addEventListener("click", () => {
-    textEl.classList.toggle("todo-completed");
-    roundEl.classList.toggle("checked");
-    checkCompleted(item, todosArr);
-    trackItems();
-  });
-  textEl.addEventListener("click", () => {
-    textEl.classList.toggle("todo-completed");
-    roundEl.classList.toggle("checked");
-    checkCompleted(item, todosArr);
-    trackItems();
-  });
   removeBtn.addEventListener("click", removeItem);
+  if (addAllEvents) {
+    const roundEl = item.querySelector(".round");
+    const textEl = item.querySelector(".todo-text");
+    roundEl.addEventListener("click", () => {
+      textEl.classList.toggle("todo-completed");
+      roundEl.classList.toggle("checked");
+      checkCompleted(item, todosArr);
+      trackItems(todosArr);
+    });
+    textEl.addEventListener("click", () => {
+      textEl.classList.toggle("todo-completed");
+      roundEl.classList.toggle("checked");
+      checkCompleted(item, todosArr);
+      trackItems(todosArr);
+    });
+  }
 }
 
 //setting local storage
@@ -110,28 +116,6 @@ function getLocalStorage() {
   }
 }
 
-// checking if the item is completed
-// and change the todos objects array
-function checkCompleted(item, todos) {
-  todos.forEach((todo) => {
-    if (todo.id === parseInt(item.getAttribute("id"))) {
-      todo.completed = !todo.completed;
-      setLocalStorage("todos", todosArr);
-    }
-  });
-}
-
-// function for checking if the item is removed
-// and change the todos objects array
-function checkRemoved(item, todos) {
-  todos.forEach((todo, i) => {
-    if (todo.id === parseInt(item.getAttribute("id"))) {
-      todos.splice(i, 1);
-      setLocalStorage("todos", todosArr);
-    }
-  });
-}
-
 // function for adding items to the  todos array
 function addItem(todo) {
   if (todo !== "") {
@@ -155,9 +139,9 @@ function addItem(todo) {
     // setting local storage for items
     setLocalStorage("todos", todosArr);
     // creating the todo object
-    createTodo(todoObj);
+    createTodo(todoObj, allLiContainer);
 
-    trackItems();
+    trackItems(todosArr);
     inputEl.value = "";
 
     // Increment the id and save it to local storage
@@ -165,13 +149,42 @@ function addItem(todo) {
     setLocalStorage("id", id);
   }
 }
+// checking if the item is completed
+// and change the todos objects array
+function checkCompleted(item, todos) {
+  todos.forEach((todo) => {
+    if (todo.id === parseInt(item.getAttribute("id"))) {
+      todo.completed = !todo.completed;
+      setLocalStorage("todos", todosArr);
+      // if the item is completed
+      if (todo.completed) {
+        // create this item in the completed list container
+        createTodo(todo, completedLiContainer);
+      } else {
+        // if not remove this item from the completed list container
+        removeCompleted(item);
+      }
+    }
+  });
+}
+
+// function for checking if the item is removed
+// and change the todos objects array
+function checkRemoved(item, todos) {
+  todos.forEach((todo, i) => {
+    if (todo.id === parseInt(item.getAttribute("id"))) {
+      todos.splice(i, 1);
+      setLocalStorage("todos", todosArr);
+    }
+  });
+}
 
 // function for removing items
 function removeItem(e) {
   const todoItem = e.currentTarget.parentElement;
   todoItem.classList.add("remove-list");
   checkRemoved(todoItem, todosArr);
-  trackItems();
+  trackItems(todosArr);
   setTimeout(function () {
     todoItem.remove();
   }, 500);
@@ -186,18 +199,38 @@ function removeActive() {
     container.classList.add("hidden");
   });
 }
+// adding the events for the comppleted items
+// function completedItemsEvents() {
+//   let completedItems = completedLiContainer.childNodes;
+//   completedItems.forEach((item) => {
+//     // Clone the item
+//     let clone = item.cloneNode(true);
+//     // Add event listener only to the remove button of the cloned item
+//     const removeBtn = clone.querySelector(".remove-btn");
+//     removeBtn.addEventListener("click", removeItem);
 
-function trackItems() {
-  let leftItems = todosArr.filter((item) => item.completed === false);
+//     // Replace the original item with the cloned item
+//     item.parentNode.replaceChild(clone, item);
+//   });
+// }
+
+// removing completed items from the completed list
+// container
+function removeCompleted(item) {
+  let completedItems = completedLiContainer.childNodes;
+  completedItems.forEach((child) => {
+    if (child.id === item.getAttribute("id")) {
+      completedLiContainer.removeChild(child);
+    }
+  });
+}
+// tracking the left items
+function trackItems(todos) {
+  let leftItems = todos.filter((item) => item.completed === false);
   itemsLeftEl.textContent = leftItems.length;
   // Save the count to local storage
   setLocalStorage("leftItemsCount", leftItems.length);
 }
-
-// adding default todos
-todosArr.forEach((item) => {
-  createTodo(item);
-});
 
 // toggling tab btns and list containers
 tabBtns.forEach((btn, i) => {
@@ -214,11 +247,25 @@ themesBtn.addEventListener("click", toggleThemes);
 
 // setting
 window.onload = function () {
+  // adding default todos
+  todosArr.forEach((item) => {
+    createTodo(item, allLiContainer);
+  });
+  // checking all the completed items
+  // and append them to the completed tab
+  todosArr.forEach((todo) => {
+    const { completed } = todo;
+    if (completed) {
+      createTodo(todo, completedLiContainer);
+    }
+  });
+
   // Get the count from local storage
   let savedCount = localStorage.getItem("leftItemsCount");
   if (savedCount !== null) {
     itemsLeftEl.textContent = savedCount;
   }
+  // filtering all completed items
 };
 
 inputEl.addEventListener("keydown", (e) => {
