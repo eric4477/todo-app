@@ -242,24 +242,21 @@ function removeCompleted(item) {
 // removing all completed items in the  completed
 // list container and in the all container
 function removeAllCompleted() {
-  allItems.forEach((item) => {
-    let completedTodos = todosArr.filter((item) => item.completed === true);
-    completedTodos.forEach((todo) => {
-      if (todo.id === Number(item.id)) {
+  completedItems.forEach((CompItem) => {
+    CompItem.classList.add("remove-list");
+    checkRemoved(CompItem, todosArr);
+    trackItems(todosArr);
+    setTimeout(function () {
+      CompItem.remove();
+    }, 500);
+    allItems.forEach((item) => {
+      if (CompItem.id === item.id) {
         item.classList.add("remove-list");
         setTimeout(function () {
           item.remove();
         }, 500);
       }
     });
-  });
-  completedItems.forEach((item) => {
-    item.classList.add("remove-list");
-    checkRemoved(item, todosArr);
-    trackItems(todosArr);
-    setTimeout(function () {
-      item.remove();
-    }, 500);
   });
 }
 // tracking the left items
