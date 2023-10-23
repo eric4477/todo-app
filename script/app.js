@@ -3,13 +3,12 @@ const html = document.documentElement;
 const inputEl = document.getElementById("input");
 const themesBtn = document.querySelector(".toggle-themes-btn");
 const addBtn = document.getElementById("add-todo-btn");
+const clearBtn = document.getElementById("clear-btn");
 const allLiContainer = document.querySelector(".all-list-container");
-const completedLiContainer = document.querySelector(
-  ".completed-list-container"
-);
 const emptyLiContainer = document.querySelector(".empty-list-container");
 const itemsLeftEl = document.getElementById("items-left");
 let allLiContainers = document.querySelectorAll(".list-container");
+const completedLiContainer = allLiContainers[2];
 let tabBtns = document.querySelectorAll(".tab-btn");
 let removeBtn = document.querySelectorAll(".remove-btn");
 
@@ -66,6 +65,7 @@ function todoAddEvents(item) {
   roundEl.addEventListener("click", () => {
     textEl.classList.toggle("todo-completed");
     roundEl.classList.toggle("checked");
+    console.log(item.getAttribute("completed"));
     checkCompleted(item, todosArr);
     otherTodosEvents(completedItems, completedLiContainer);
     trackItems(todosArr);
@@ -209,6 +209,7 @@ function checkRemoved(item, todos) {
 
 // function for removing items
 function removeItem(e) {
+  console.log(e);
   const todoItem = e.currentTarget.parentElement;
   todoItem.classList.add("remove-list");
   checkRemoved(todoItem, todosArr);
@@ -236,6 +237,29 @@ function removeCompleted(item) {
     if (child.id === item.getAttribute("id")) {
       completedLiContainer.removeChild(child);
     }
+  });
+}
+// removing all completed items in the  completed
+// list container and in the all container
+function removeAllCompleted() {
+  allItems.forEach((item) => {
+    let completedTodos = todosArr.filter((item) => item.completed === true);
+    completedTodos.forEach((todo) => {
+      if (todo.id === Number(item.id)) {
+        item.classList.add("remove-list");
+        setTimeout(function () {
+          item.remove();
+        }, 500);
+      }
+    });
+  });
+  completedItems.forEach((item) => {
+    item.classList.add("remove-list");
+    checkRemoved(item, todosArr);
+    trackItems(todosArr);
+    setTimeout(function () {
+      item.remove();
+    }, 500);
   });
 }
 // tracking the left items
@@ -293,3 +317,4 @@ inputEl.addEventListener("keydown", (e) => {
 addBtn.addEventListener("click", () => {
   addItem(inputEl.value);
 });
+clearBtn.addEventListener("click", removeAllCompleted);

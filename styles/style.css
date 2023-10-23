@@ -266,11 +266,11 @@ body {
 .todo-container .todo-containers .todo-tabs-container .tab-btns .btn:hover {
   color: var(--hover-color);
 }
-.todo-container .todo-containers .todo-tabs-container .clear-btn {
+.todo-container .todo-containers .todo-tabs-container #clear-btn {
   font-weight: 400;
   font-size: 0.9rem;
   color: var(--inactive-color);
 }
-.todo-container .todo-containers .todo-tabs-container .clear-btn:hover {
+.todo-container .todo-containers .todo-tabs-container #clear-btn:hover {
   color: var(--hover-color);
 }/*# sourceMappingURL=style.css.map */
