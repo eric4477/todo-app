@@ -9,12 +9,15 @@ const emptyLiContainer = document.querySelector(".empty-list-container");
 const itemsLeftEl = document.getElementById("items-left");
 let allLiContainers = document.querySelectorAll(".list-container");
 const completedLiContainer = allLiContainers[2];
+const activeLiContainer = allLiContainers[1];
+console.log(activeLiContainer);
 let tabBtns = document.querySelectorAll(".tab-btn");
 let removeBtn = document.querySelectorAll(".remove-btn");
 
 // variables
 const todosArr = getLocalStorage();
 let completedItems = completedLiContainer.childNodes;
+let activeItems = activeLiContainer.childNodes;
 let allItems = allLiContainer.childNodes;
 
 //functions
@@ -65,16 +68,19 @@ function todoAddEvents(item) {
   roundEl.addEventListener("click", () => {
     textEl.classList.toggle("todo-completed");
     roundEl.classList.toggle("checked");
-    console.log(item.getAttribute("completed"));
     checkCompleted(item, todosArr);
+    checkActive(item, todosArr);
     otherTodosEvents(completedItems, completedLiContainer);
+    otherTodosEvents(activeItems, activeLiContainer);
     trackItems(todosArr);
   });
   textEl.addEventListener("click", () => {
     textEl.classList.toggle("todo-completed");
     roundEl.classList.toggle("checked");
     checkCompleted(item, todosArr);
+    checkActive(item, todosArr);
     otherTodosEvents(completedItems, completedLiContainer);
+    otherTodosEvents(activeItems, activeLiContainer);
     trackItems(todosArr);
   });
 }
@@ -169,6 +175,10 @@ function addItem(todo) {
     setLocalStorage("todos", todosArr);
     // creating the todo object
     createTodo(todoObj, allLiContainer);
+    createTodo(todoObj, activeLiContainer);
+
+    // Call otherTodosEvents function for activeItems
+    otherTodosEvents(activeItems, activeLiContainer);
 
     trackItems(todosArr);
     inputEl.value = "";
@@ -193,6 +203,26 @@ function checkCompleted(item, todos) {
         removeCompleted(item);
       }
     }
+  });
+}
+
+function checkActive(item, todos) {
+  const completedTodo = todos.filter(
+    (todo) => todo.id === Number(item.id) && todo.completed === true
+  );
+  const activeTodo = todos.filter(
+    (todo) => todo.id === Number(item.id) && todo.completed === false
+  );
+
+  completedTodo.forEach((todo) => {
+    activeItems.forEach((item) => {
+      if (todo.id === Number(item.id)) {
+        activeLiContainer.removeChild(item);
+      }
+    });
+  });
+  activeTodo.forEach((todo) => {
+    createTodo(todo, activeLiContainer);
   });
 }
 
@@ -286,16 +316,24 @@ window.onload = function () {
   todosArr.forEach((item) => {
     createTodo(item, allLiContainer);
   });
-  // checking all the completed items
-  // and append them to the completed tab
+  // checking all active items and append
+  // them to the active tab
   todosArr.forEach((todo) => {
-    const { completed } = todo;
-    if (completed) {
-      createTodo(todo, completedLiContainer);
+    if (!todo.completed) {
+      createTodo(todo, activeLiContainer);
     }
   });
 
+  // checking all the completed items
+  // and append them to the completed tab
+  todosArr.forEach((todo) => {
+    if (todo.completed) {
+      createTodo(todo, completedLiContainer);
+    }
+  });
+  // adding diffrent events to the active and completed tab
   otherTodosEvents(completedItems, completedLiContainer);
+  otherTodosEvents(activeItems, activeLiContainer);
 
   // Get the count from local storage
   let savedCount = localStorage.getItem("leftItemsCount");
@@ -314,4 +352,5 @@ inputEl.addEventListener("keydown", (e) => {
 addBtn.addEventListener("click", () => {
   addItem(inputEl.value);
 });
+
 clearBtn.addEventListener("click", removeAllCompleted);
