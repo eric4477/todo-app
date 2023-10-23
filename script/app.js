@@ -10,7 +10,6 @@ const itemsLeftEl = document.getElementById("items-left");
 let allLiContainers = document.querySelectorAll(".list-container");
 const completedLiContainer = allLiContainers[2];
 const activeLiContainer = allLiContainers[1];
-console.log(activeLiContainer);
 let tabBtns = document.querySelectorAll(".tab-btn");
 let removeBtn = document.querySelectorAll(".remove-btn");
 
@@ -62,6 +61,7 @@ function todoAddEvents(item) {
   removeBtn.addEventListener("click", (e) => {
     removeItem(e);
     removeCompleted(item);
+    removeActive(item);
   });
   const roundEl = item.querySelector(".round");
   const textEl = item.querySelector(".todo-text");
@@ -109,6 +109,44 @@ function otherTodosEvents(items, container) {
   });
 }
 
+// function for adding items to the  todos array
+function addItem(todo) {
+  if (todo !== "") {
+    // Get the id from local storage
+    let id = localStorage.getItem("id");
+
+    // If there was no saved id, initialize it to 5
+    if (id === null) {
+      id = 5;
+    } else {
+      // Convert the id to a number
+      id = parseInt(id);
+    }
+
+    const todoObj = {
+      todo: todo,
+      completed: false,
+      id: id,
+    };
+    todosArr.push(todoObj);
+    // setting local storage for items
+    setLocalStorage("todos", todosArr);
+    // creating the todo object
+    createTodo(todoObj, allLiContainer);
+    createTodo(todoObj, activeLiContainer);
+
+    // Call otherTodosEvents function for activeItems
+    otherTodosEvents(activeItems, activeLiContainer);
+
+    trackItems(todosArr);
+    inputEl.value = "";
+
+    // Increment the id and save it to local storage
+    id++;
+    setLocalStorage("id", id);
+  }
+}
+
 //setting local storage
 function setLocalStorage(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
@@ -151,43 +189,30 @@ function getLocalStorage() {
   }
 }
 
-// function for adding items to the  todos array
-function addItem(todo) {
-  if (todo !== "") {
-    // Get the id from local storage
-    let id = localStorage.getItem("id");
-
-    // If there was no saved id, initialize it to 5
-    if (id === null) {
-      id = 5;
-    } else {
-      // Convert the id to a number
-      id = parseInt(id);
-    }
-
-    const todoObj = {
-      todo: todo,
-      completed: false,
-      id: id,
-    };
-    todosArr.push(todoObj);
-    // setting local storage for items
-    setLocalStorage("todos", todosArr);
-    // creating the todo object
-    createTodo(todoObj, allLiContainer);
-    createTodo(todoObj, activeLiContainer);
-
-    // Call otherTodosEvents function for activeItems
-    otherTodosEvents(activeItems, activeLiContainer);
-
-    trackItems(todosArr);
-    inputEl.value = "";
-
-    // Increment the id and save it to local storage
-    id++;
-    setLocalStorage("id", id);
-  }
+// function for checking the active item
+function checkActive(item, todos) {
+  // checking if the item is completed
+  const completedTodo = todos.filter(
+    (todo) => todo.id === Number(item.id) && todo.completed
+  );
+  // checking if the item is not completed
+  const activeTodo = todos.filter(
+    (todo) => todo.id === Number(item.id) && !todo.completed
+  );
+  //  if the item is not completed create this item and append it to the active tab
+  activeTodo.forEach((todo) => {
+    createTodo(todo, activeLiContainer);
+  });
+  // if the item is completed removing the active item from the acive tab
+  completedTodo.forEach((todo) => {
+    activeItems.forEach((item) => {
+      if (todo.id === Number(item.id)) {
+        activeLiContainer.removeChild(item);
+      }
+    });
+  });
 }
+
 // checking if the item is completed and change the todos objects array
 function checkCompleted(item, todos) {
   todos.forEach((todo) => {
@@ -206,26 +231,6 @@ function checkCompleted(item, todos) {
   });
 }
 
-function checkActive(item, todos) {
-  const completedTodo = todos.filter(
-    (todo) => todo.id === Number(item.id) && todo.completed === true
-  );
-  const activeTodo = todos.filter(
-    (todo) => todo.id === Number(item.id) && todo.completed === false
-  );
-
-  completedTodo.forEach((todo) => {
-    activeItems.forEach((item) => {
-      if (todo.id === Number(item.id)) {
-        activeLiContainer.removeChild(item);
-      }
-    });
-  });
-  activeTodo.forEach((todo) => {
-    createTodo(todo, activeLiContainer);
-  });
-}
-
 // function for checking if the item is removed
 // and change the todos objects array
 function checkRemoved(item, todos) {
@@ -239,7 +244,6 @@ function checkRemoved(item, todos) {
 
 // function for removing items
 function removeItem(e) {
-  console.log(e);
   const todoItem = e.currentTarget.parentElement;
   todoItem.classList.add("remove-list");
   checkRemoved(todoItem, todosArr);
@@ -249,23 +253,19 @@ function removeItem(e) {
   }, 500);
 }
 
-// removing active btns and list containers
-function removeActive() {
-  tabBtns.forEach((btn) => {
-    btn.classList.remove("active");
-  });
-  allLiContainers.forEach((container) => {
-    container.classList.add("hidden");
+function removeActive(item) {
+  activeItems.forEach((actItem) => {
+    if (actItem.id === item.getAttribute("id")) {
+      activeLiContainer.removeChild(actItem);
+    }
   });
 }
 
-// removing completed items from the completed list
-// container
+// removing completed items from the completed list container
 function removeCompleted(item) {
-  let completedItems = completedLiContainer.childNodes;
-  completedItems.forEach((child) => {
-    if (child.id === item.getAttribute("id")) {
-      completedLiContainer.removeChild(child);
+  completedItems.forEach((compItem) => {
+    if (compItem.id === item.getAttribute("id")) {
+      completedLiContainer.removeChild(compItem);
     }
   });
 }
@@ -297,10 +297,20 @@ function trackItems(todos) {
   setLocalStorage("leftItemsCount", leftItems.length);
 }
 
+// removing active btns and tabs
+function removeActiveTabs() {
+  tabBtns.forEach((btn) => {
+    btn.classList.remove("active");
+  });
+  allLiContainers.forEach((container) => {
+    container.classList.add("hidden");
+  });
+}
+
 // toggling tab btns and list containers
 tabBtns.forEach((btn, i) => {
   btn.addEventListener("click", () => {
-    removeActive();
+    removeActiveTabs();
     btn.classList.add("active");
     allLiContainers[i].classList.remove("hidden");
   });
