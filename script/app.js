@@ -241,6 +241,24 @@ function checkRemoved(item, todos) {
     }
   });
 }
+//checking if there is no items
+function checkEmpty(todos) {
+  if (todos.length === 0) {
+    removeActiveTabs();
+    emptyLiContainer.classList.remove("hidden");
+    tabBtns.forEach((btn) => {
+      btn.disabled = true;
+    });
+  } else {
+    emptyLiContainer.classList.add("hidden");
+    allLiContainer.classList.remove("hidden");
+    const allBtn = tabBtns[0];
+    allBtn.classList.add("active");
+    tabBtns.forEach((btn) => {
+      btn.disabled = false;
+    });
+  }
+}
 
 // function for removing items
 function removeItem(e) {
@@ -293,6 +311,7 @@ function removeAllCompleted() {
 function trackItems(todos) {
   let leftItems = todos.filter((item) => item.completed === false);
   itemsLeftEl.textContent = leftItems.length;
+  checkEmpty(todosArr);
   // Save the count to local storage
   setLocalStorage("leftItemsCount", leftItems.length);
 }
@@ -308,13 +327,15 @@ function removeActiveTabs() {
 }
 
 // toggling tab btns and list containers
-tabBtns.forEach((btn, i) => {
-  btn.addEventListener("click", () => {
-    removeActiveTabs();
-    btn.classList.add("active");
-    allLiContainers[i].classList.remove("hidden");
+(function toggleTabs() {
+  tabBtns.forEach((btn, i) => {
+    btn.addEventListener("click", () => {
+      removeActiveTabs();
+      btn.classList.add("active");
+      allLiContainers[i].classList.remove("hidden");
+    });
   });
-});
+})();
 
 // event listeners
 
@@ -322,6 +343,8 @@ themesBtn.addEventListener("click", toggleThemes);
 
 // setting
 window.onload = function () {
+  // checking if there is no items
+  checkEmpty(todosArr);
   // adding default todos
   todosArr.forEach((item) => {
     createTodo(item, allLiContainer);
@@ -350,7 +373,6 @@ window.onload = function () {
   if (savedCount !== null) {
     itemsLeftEl.textContent = savedCount;
   }
-  // filtering all completed items
 };
 
 inputEl.addEventListener("keydown", (e) => {

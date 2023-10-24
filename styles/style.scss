@@ -194,6 +194,7 @@ body {
       @include todo-containers();
       align-items: center;
       justify-content: center;
+
       span {
         font-size: 1.2rem;
       }
