@@ -6,6 +6,7 @@
 $brightBlue: hsl(220, 98%, 61%);
 $CheckBackground: linear-gradient(hsl(192, 100%, 67%), hsl(280, 87%, 65%));
 $white: #ffff;
+$grey: #edeef7;
 // end of primary colors
 
 // general styles
@@ -17,6 +18,14 @@ $pop: 1.1;
 
 .hidden {
   display: none !important;
+}
+
+.todo-chosen {
+  box-shadow: 8px 8px 32px $grey !important;
+}
+
+.todo-drag {
+  opacity: 0 !important;
 }
 
 .remove-list {

@@ -30,6 +30,14 @@
   display: none !important;
 }
 
+.todo-chosen {
+  box-shadow: 8px 8px 32px #edeef7 !important;
+}
+
+.todo-drag {
+  opacity: 0 !important;
+}
+
 .remove-list {
   transform: translateX(100%);
 }

@@ -18,6 +18,7 @@ const todosArr = getLocalStorage();
 let completedItems = completedLiContainer.childNodes;
 let activeItems = activeLiContainer.childNodes;
 let allItems = allLiContainer.childNodes;
+let draggedItem = null;
 
 //functions
 
@@ -41,6 +42,7 @@ function createTodo(todoObj, container) {
   const li = document.createElement("li");
   li.setAttribute("id", id);
   li.setAttribute("class", "todo-item");
+  li.setAttribute("draggable", "true");
   li.innerHTML = `<span class="round ${completed ? "checked" : ""}">
   <img src="images/icon-check.svg" alt="check-icon" />
   </span>
@@ -63,6 +65,11 @@ function todoAddEvents(item) {
     removeCompleted(item);
     removeActive(item);
   });
+  // drag and drop events
+  item.addEventListener("dragstart", handleDragStart);
+  item.addEventListener("dragover", handleDragOver);
+  item.addEventListener("drop", handleDrop);
+  // drag and drop events end
   const roundEl = item.querySelector(".round");
   const textEl = item.querySelector(".todo-text");
   roundEl.addEventListener("click", () => {
@@ -241,7 +248,7 @@ function checkRemoved(item, todos) {
     }
   });
 }
-//checking if there is no items
+// checking if there is no items
 function checkEmpty(todos) {
   if (todos.length === 0) {
     removeActiveTabs();
@@ -251,12 +258,17 @@ function checkEmpty(todos) {
     });
   } else {
     emptyLiContainer.classList.add("hidden");
-    allLiContainer.classList.remove("hidden");
     const allBtn = tabBtns[0];
-    allBtn.classList.add("active");
+    const activeBtn = tabBtns[1];
+    const completedBtn = tabBtns[2];
+    if (activeBtn.disabled === true && completedBtn.disabled === true) {
+      allLiContainer.classList.remove("hidden");
+      allBtn.classList.add("active");
+    }
     tabBtns.forEach((btn) => {
       btn.disabled = false;
     });
+    // toggleTabs();
   }
 }
 
@@ -341,10 +353,49 @@ function removeActiveTabs() {
 
 themesBtn.addEventListener("click", toggleThemes);
 
+clearBtn.addEventListener("click", removeAllCompleted);
+
+inputEl.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    addItem(inputEl.value);
+  }
+});
+
+addBtn.addEventListener("click", () => {
+  addItem(inputEl.value);
+});
+
+// drag and drop
+
+function handleDragStart(e) {
+  draggedItem = this;
+  e.dataTransfer.effectAllowed = "move";
+}
+
+function handleDragOver(e) {
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  e.dataTransfer.dropEffect = "move";
+  return false;
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  if (draggedItem !== this) {
+    this.parentNode.removeChild(draggedItem);
+    const dropHTML = draggedItem.outerHTML;
+    this.insertAdjacentHTML("beforebegin", dropHTML);
+    const dropElem = this.previousSibling;
+    todoAddEvents(dropElem);
+  }
+}
+
 // setting
 window.onload = function () {
   // checking if there is no items
   checkEmpty(todosArr);
+
   // adding default todos
   todosArr.forEach((item) => {
     createTodo(item, allLiContainer);
@@ -374,15 +425,3 @@ window.onload = function () {
     itemsLeftEl.textContent = savedCount;
   }
 };
-
-inputEl.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    addItem(inputEl.value);
-  }
-});
-
-addBtn.addEventListener("click", () => {
-  addItem(inputEl.value);
-});
-
-clearBtn.addEventListener("click", removeAllCompleted);
