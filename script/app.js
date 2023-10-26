@@ -7,11 +7,10 @@ const clearBtn = document.getElementById("clear-btn");
 const allLiContainer = document.querySelector(".all-list-container");
 const emptyLiContainer = document.querySelector(".empty-list-container");
 const itemsLeftEl = document.getElementById("items-left");
+let tabBtns = document.querySelectorAll(".tab-btn");
 let allLiContainers = document.querySelectorAll(".list-container");
 const completedLiContainer = allLiContainers[2];
 const activeLiContainer = allLiContainers[1];
-let tabBtns = document.querySelectorAll(".tab-btn");
-let removeBtn = document.querySelectorAll(".remove-btn");
 
 // variables
 const todosArr = getLocalStorage();
@@ -340,7 +339,6 @@ function removeActiveTabs() {
 // toggling tab btns and list containers
 (function toggleTabs() {
   tabBtns.forEach((btn, i) => {
-    console.log(btn);
     btn.addEventListener("click", () => {
       removeActiveTabs();
       btn.classList.add("active");
@@ -348,8 +346,6 @@ function removeActiveTabs() {
     });
   });
 })();
-
-console.log(clearBtn);
 
 // event listeners
 
