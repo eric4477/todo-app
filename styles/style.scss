@@ -1,12 +1,13 @@
 @use "light-theme" as *;
 @use "dark-theme" as *;
+@use "media" as *;
 @import "mixins";
 
 //primary colors
 $brightBlue: hsl(220, 98%, 61%);
 $CheckBackground: linear-gradient(hsl(192, 100%, 67%), hsl(280, 87%, 65%));
 $white: #ffff;
-$grey: #edeef7;
+$grey: #89898c;
 // end of primary colors
 
 // general styles
@@ -18,14 +19,6 @@ $pop: 1.1;
 
 .hidden {
   display: none !important;
-}
-
-.todo-chosen {
-  box-shadow: 8px 8px 32px $grey !important;
-}
-
-.todo-drag {
-  opacity: 0 !important;
 }
 
 .remove-list {
@@ -87,7 +80,6 @@ body {
   background-position: top center;
   background-repeat: no-repeat;
   background-size: 100% 17rem;
-
   font-family: "Josefin Sans", sans-serif;
 }
 
@@ -187,6 +179,10 @@ body {
         opacity: 0;
         visibility: hidden;
         user-select: none;
+        user-select: none !important;
+        img {
+          width: 1rem;
+        }
       }
       &:hover {
         .remove-btn {
@@ -206,6 +202,7 @@ body {
 
       span {
         font-size: 1.2rem;
+        color: var(--plus-color);
       }
     }
     .active-list-container {
@@ -216,26 +213,27 @@ body {
       @include todo-containers();
     }
     .todo-tabs-container {
-      height: 3rem;
-      background-color: var(--card-bg);
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 0 1.2rem;
-      h4 {
-        font-size: 0.9rem;
-        color: var(--inactive-color);
-        font-weight: 400;
-      }
-      .tab-btns {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        .btn {
-          font-weight: 700;
+      .tabs-container {
+        position: relative;
+        @include todo-tabs-container(space-between);
+        h4 {
+          font-size: 0.9rem;
+          color: var(--inactive-color);
+          font-weight: 400;
+        }
+        .tab-btns {
+          @include tab-btns;
+          .btn {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--inactive-color);
+            &:hover {
+              color: var(--hover-color);
+            }
+          }
+        }
+        #clear-btn {
+          font-weight: 400;
           font-size: 0.9rem;
           color: var(--inactive-color);
           &:hover {
@@ -243,14 +241,48 @@ body {
           }
         }
       }
-      #clear-btn {
-        font-weight: 400;
-        font-size: 0.9rem;
-        color: var(--inactive-color);
-        &:hover {
-          color: var(--hover-color);
+      .tabs-container {
+        @include todo-tabs-container(space-between);
+
+        h4 {
+          font-size: 0.9rem;
+          color: var(--inactive-color);
+          font-weight: 400;
+        }
+        #clear-btn {
+          font-weight: 400;
+          font-size: 0.9rem;
+          color: var(--inactive-color);
+          &:hover {
+            color: var(--hover-color);
+          }
         }
       }
+      .tabs-container--2 {
+        @include todo-tabs-container(center);
+        margin-top: 1rem;
+        .tab-btns {
+          @include tab-btns;
+          .btn {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--inactive-color);
+            &:hover {
+              color: var(--hover-color);
+            }
+          }
+        }
+      }
+    }
+  }
+  .drag-drop {
+    margin-top: 2rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+      color: $grey;
     }
   }
 }

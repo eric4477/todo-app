@@ -261,14 +261,13 @@ function checkEmpty(todos) {
     const allBtn = tabBtns[0];
     const activeBtn = tabBtns[1];
     const completedBtn = tabBtns[2];
-    if (activeBtn.disabled === true && completedBtn.disabled === true) {
+    if (activeBtn.disabled && completedBtn.disabled) {
       allLiContainer.classList.remove("hidden");
       allBtn.classList.add("active");
     }
     tabBtns.forEach((btn) => {
       btn.disabled = false;
     });
-    // toggleTabs();
   }
 }
 
@@ -341,6 +340,7 @@ function removeActiveTabs() {
 // toggling tab btns and list containers
 (function toggleTabs() {
   tabBtns.forEach((btn, i) => {
+    console.log(btn);
     btn.addEventListener("click", () => {
       removeActiveTabs();
       btn.classList.add("active");
@@ -348,6 +348,8 @@ function removeActiveTabs() {
     });
   });
 })();
+
+console.log(clearBtn);
 
 // event listeners
 

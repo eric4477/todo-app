@@ -8,3 +8,20 @@
   overflow-x: hidden;
   background-color: var(--card-bg);
 }
+
+@mixin todo-tabs-container($direction) {
+  height: 3rem;
+  padding: 0 1.2rem;
+  background-color: var(--card-bg);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: $direction;
+}
+
+@mixin tab-btns {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

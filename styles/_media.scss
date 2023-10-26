@@ -1,0 +1,53 @@
+@import "mixins";
+
+@media screen and (max-width: 800px) {
+  .remove-btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+    user-select: none !important;
+  }
+  .remove-btn img {
+    width: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    background-image: var(--bg-img-mobile) !important;
+  }
+  .todo-container {
+    max-width: 27rem !important;
+  }
+  .tabs-container {
+    .tab-btns {
+      position: absolute;
+      margin-top: 9rem;
+      width: 100%;
+      left: 0;
+      border-radius: 5px;
+      @include todo-tabs-container(center);
+      height: 3.2rem;
+    }
+  }
+  .drag-drop {
+    margin-top: 6rem !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .todo-container {
+    max-width: 23rem !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .todo-container {
+    max-width: 20rem !important;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .todo-container {
+    max-width: 18rem !important;
+  }
+}

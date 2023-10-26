@@ -26,7 +26,12 @@
       </header>
       <div class="todo-list-input-container">
         <span class="circle"></span>
-        <input id="input" type="text" placeholder="Create a new todo..." />
+        <input
+          id="input"
+          maxlength="50"
+          type="text"
+          placeholder="Create a new todo..."
+        />
         <button id="add-todo-btn">+</button>
       </div>
       <!--todo containers-->
@@ -47,17 +52,22 @@
         <!--end of completed list container-->
         <!--tabs container-->
         <div class="todo-tabs-container">
-          <h4><span id="items-left">3</span> items left</h4>
-          <div class="tab-btns">
-            <button class="btn tab-btn active">All</button>
-            <button class="btn tab-btn">Active</button>
-            <button class="btn tab-btn">Completed</button>
+          <div class="tabs-container">
+            <h4><span id="items-left">3</span> items left</h4>
+            <div class="tab-btns">
+              <button class="btn tab-btn active">All</button>
+              <button class="btn tab-btn">Active</button>
+              <button class="btn tab-btn">Completed</button>
+            </div>
+            <button id="clear-btn" class="btn">Clear Completed</button>
           </div>
-          <button id="clear-btn" class="btn">Clear Completed</button>
         </div>
         <!--end of tabs container-->
       </div>
       <!--end of todo containers-->
+      <div class="drag-drop">
+        <span>Drag and drop to reorder list</span>
+      </div>
     </div>
   </body>
 </html>
