@@ -14,6 +14,7 @@
 @media screen and (max-width: 600px) {
   body {
     background-image: var(--bg-img-mobile) !important;
+    padding-bottom: 2rem;
   }
   .todo-container {
     max-width: 27rem !important;
@@ -30,7 +31,7 @@
     }
   }
   .drag-drop {
-    margin-top: 6rem !important;
+    display: none !important;
   }
 }
 
