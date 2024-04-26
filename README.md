@@ -20,9 +20,11 @@ https://eric4477.github.io/todo-app/
 - Mark tasks as completed or incomplete.
 - Delete tasks from the todo list.
 - Toggle between light and dark mode themes.
+- Save todos to local storage for persistence across browser sessions.
 
 - ## Technologies Used
 
 - HTML: Used for structuring the content and layout of the application.
 - CSS: Used for styling the user interface and implementing light and dark mode themes.
+- SCSS: with SCSS providing enhanced features such as variables, nesting, and mixins.
 - JavaScript: Used for implementing dynamic behavior and functionality of the todo list.
